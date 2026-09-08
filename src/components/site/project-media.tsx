@@ -30,14 +30,14 @@ export function ProjectMedia({
   slot: string;
 }) {
   return (
-    <div className="col-span-1 grid grid-cols-subgrid gap-6 md:col-span-4 md:gap-8">
-      <div className="col-span-1 md:col-span-4">
+    <div className="col-span-2 grid grid-cols-subgrid gap-4 md:col-span-4 md:gap-8">
+      <div className="col-span-2 md:col-span-4">
         <MediaFrame ratio={16 / 10} src={hero} alt={`${slot} hero`} label={`${slot} — 01`} />
       </div>
-      <div className="col-span-1 md:col-span-2">
+      <div className="col-span-2 md:col-span-2">
         <MediaFrame ratio={8 / 7} src={detail1} alt={`${slot} detail 1`} label={`${slot} — 02`} />
       </div>
-      <div className="col-span-1 md:col-span-2">
+      <div className="col-span-2 md:col-span-2">
         <MediaFrame ratio={8 / 7} src={detail2} alt={`${slot} detail 2`} label={`${slot} — 03`} />
       </div>
     </div>

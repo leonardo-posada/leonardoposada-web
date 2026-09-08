@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/lib/site";
@@ -47,13 +48,15 @@ function ProjectMention({
 
 function Avatar() {
   return (
-    <div
-      aria-hidden
-      className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted md:size-20"
-    >
-      <span className="text-xl font-light text-foreground md:text-2xl">
-        L
-      </span>
+    <div className="relative size-16 shrink-0 overflow-hidden rounded-full bg-muted md:size-20">
+      <Image
+        src="/hero/avatar.png"
+        alt="Leonardo Posada"
+        fill
+        sizes="80px"
+        className="object-cover"
+        priority
+      />
     </div>
   );
 }
@@ -69,19 +72,19 @@ export function Hero() {
         initial="hidden"
         animate="show"
         transition={TRANS_OUT}
-        className="col-span-1 md:col-span-1 md:justify-self-end"
+        className="col-span-2 md:col-span-1 md:justify-self-end"
       >
         <Avatar />
       </motion.div>
 
       {/* cols 2-3 — hero content (z-10 so it sits ABOVE the hover images) */}
-      <div className="relative z-10 col-span-1 flex flex-col gap-10 md:col-span-2 md:col-start-2 md:row-start-1">
+      <div className="relative z-10 col-span-2 flex flex-col gap-10 md:col-span-2 md:col-start-2 md:row-start-1">
         <motion.h1
           variants={REVEAL}
           initial="hidden"
           animate="show"
           transition={{ ...TRANS_OUT, delay: 0.16 }}
-          className="max-w-xl font-light text-foreground text-2xl md:text-[32px]"
+          className="max-w-3xl font-light text-foreground text-2xl md:text-4xl"
           style={{ lineHeight: 1.25, letterSpacing: "-1.5px" }}
         >
           Hi, I&apos;m Leonardo. Product Designer with over 15 years of
@@ -158,17 +161,23 @@ export function Hero() {
         </motion.ul>
       </div>
 
-      {/* col 3 — Rappi hover image (behind text, scale-in on hover, pulled up to header) */}
-      <div className="pointer-events-none z-0 hidden md:col-span-1 md:col-start-3 md:row-start-1 md:-mt-32 md:flex md:items-start md:justify-center">
+      {/* col 3 — Rappi hover image (behind text, scale-in on hover, midway between header and title) */}
+      <div className="pointer-events-none z-0 hidden md:col-span-1 md:col-start-3 md:row-start-1 md:-mt-16 md:flex md:items-start md:justify-center">
         <div
           className={cn(
-            "aspect-[4/5] w-full origin-center overflow-hidden bg-muted transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            "relative aspect-[4/5] w-full origin-center overflow-hidden bg-muted transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
             hovered === "rappi"
-              ? "scale-100 opacity-100"
+              ? "scale-[1.2] opacity-100"
               : "scale-0 opacity-0",
           )}
         >
-          {/* Rappi placeholder — swap for real image */}
+          <Image
+            src="/hero/mention.jpg"
+            alt=""
+            fill
+            sizes="(min-width: 768px) 25vw, 100vw"
+            className="object-cover"
+          />
         </div>
       </div>
 
@@ -176,13 +185,19 @@ export function Hero() {
       <div className="pointer-events-none z-0 hidden md:col-span-2 md:col-start-3 md:row-start-1 md:flex md:items-start md:justify-center">
         <div
           className={cn(
-            "aspect-[4/5] w-1/2 origin-center overflow-hidden bg-muted transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            "relative aspect-[4/5] w-1/2 origin-center overflow-hidden bg-muted transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
             hovered === "yuno"
-              ? "scale-100 opacity-100"
+              ? "scale-[1.2] opacity-100"
               : "scale-0 opacity-0",
           )}
         >
-          {/* Yuno placeholder — swap for real image */}
+          <Image
+            src="/hero/mention.jpg"
+            alt=""
+            fill
+            sizes="(min-width: 768px) 12.5vw, 100vw"
+            className="object-cover"
+          />
         </div>
       </div>
     </Section>

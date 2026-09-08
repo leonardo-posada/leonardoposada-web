@@ -38,6 +38,11 @@ export const PROJECTS: readonly Project[] = [
     description:
       "Yuno stands as one of the leading Payment Orchestrators in the global market, driven by rapid international expansion.",
     services: ["Art Direction", "Design System", "UX/UI Design"],
+    media: {
+      hero: "/work/yuno/hero.webp",
+      detail1: "/work/yuno/detail-1.webp",
+      detail2: "/work/yuno/detail-2.webp",
+    },
   },
   {
     slug: "rappi",
@@ -47,6 +52,11 @@ export const PROJECTS: readonly Project[] = [
     description:
       "Rappi is a Latin-American tech company and the first SuperApp in the region. Today, Rappi operates in 400 cities across nine Latin American countries, with over 100 million downloads, more than 350,000 delivery partners, and 500,000 affiliated businesses.",
     services: ["Art Direction", "Design System", "UX/UI Design"],
+    media: {
+      hero: "/work/rappi/hero.webp",
+      detail1: "/work/rappi/detail-1.webp",
+      detail2: "/work/rappi/detail-2.webp",
+    },
   },
   {
     slug: "kontigo",
@@ -56,5 +66,10 @@ export const PROJECTS: readonly Project[] = [
     description:
       "Kontigo is a fast-growing blockchain-based stablecoin neobank (YC S24) that lets users access modern financial tools such as self-custodial wallets, high-yield stablecoin savings, crypto debit cards, credit lines, and global payments, without traditional banking barriers.",
     services: ["Art Direction", "Design System", "UX/UI Design"],
+    media: {
+      hero: "/work/kontigo/hero.webp",
+      detail1: "/work/kontigo/detail-1.webp",
+      detail2: "/work/kontigo/detail-2.webp",
+    },
   },
 ] as const;
