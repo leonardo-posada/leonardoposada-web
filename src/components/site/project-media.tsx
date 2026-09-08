@@ -59,7 +59,7 @@ function MediaFrame({
     <AspectRatio
       ratio={ratio}
       className={cn(
-        "overflow-hidden rounded-lg border border-border/70 bg-muted",
+        "overflow-hidden rounded-lg bg-muted",
         // Hover effect only for real images so the placeholder stays static.
         src && "group",
       )}
