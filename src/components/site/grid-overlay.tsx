@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { SITE_CONTAINER } from "./section";
-import { setGridVisible, useGrid } from "@/lib/use-grid";
+import { setGridVisible, useGrid } from "@/hooks/use-grid";
 
 /**
  * Visual overlay showing the responsive column grid (2 cols mobile, 4 cols

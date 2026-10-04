@@ -7,12 +7,8 @@
  */
 
 export const EASE = {
-  /** Entrance / reveal. Natural land. */
+  /** Entrance / reveal. Natural land. ease-out-expo in CSS land. */
   out: [0.22, 1, 0.36, 1] as const,
-  /** Exit. Accelerates away. */
-  in: [0.55, 0, 1, 0.45] as const,
-  /** Symmetric transitions (hover/tap, ping-pong). */
-  inOut: [0.65, 0, 0.35, 1] as const,
 } as const;
 
 export const DURATION = {

@@ -1,23 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { SITE } from "@/lib/site";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { TextLink } from "@/components/ui/text-link";
+import { TextArrow } from "@/components/ui/text-arrow";
 import { SITE_CONTAINER } from "./section";
 import { GridToggle } from "./grid-toggle";
 import { ThemeToggle } from "./theme-toggle";
-
-/**
- * Shared recipe for every tappable text row in the menu. Same size + weight
- * we already use for hero title (mobile), same color tokens as the hero /
- * footer links (muted → foreground on hover).
- */
-const MENU_ROW =
-  "text-lg font-light text-muted-foreground transition-colors hover:text-foreground";
 
 /**
  * Fullscreen mobile navigation. Opened from the navbar's burger button.
@@ -48,22 +41,20 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
       <div className={cn(SITE_CONTAINER, "flex h-full flex-col pt-16")}>
         {/* nav items (pt-16 above leaves room for the navbar's toggle button) */}
         <nav className="flex flex-col gap-6 pt-4">
-          <Link href="/#top" onClick={onClose} className={MENU_ROW}>
+          <TextLink href="/#top" onClick={onClose}>
             Intro
-          </Link>
-          <Link href="/shots" onClick={onClose} className={MENU_ROW}>
+          </TextLink>
+          <TextLink href="/shots" onClick={onClose}>
             Shots
-          </Link>
-          <a
+          </TextLink>
+          <TextLink
             href={SITE.resumeUrl}
-            target="_blank"
-            rel="noreferrer"
+            external
             onClick={onClose}
-            className={cn(MENU_ROW, "inline-flex w-fit items-center gap-1")}
+            trailingIcon={<ArrowUpRight weight="light" className="size-4" />}
           >
             Resume
-            <ArrowUpRight weight="light" className="size-4" />
-          </a>
+          </TextLink>
         </nav>
 
         {/* utility icons */}
@@ -72,42 +63,27 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
           <ThemeToggle />
         </div>
 
-        {/* socials — pinned to bottom */}
+        {/* socials · pinned to bottom */}
         <div className="mt-auto flex flex-col gap-6 pt-16 pb-10">
           <p className="text-lg font-light text-foreground">Socials</p>
           <div className="flex flex-col gap-4">
-            <a
-              href={SITE.socials.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(MENU_ROW, "w-fit")}
-            >
+            <TextLink href={SITE.socials.linkedin} external>
               LinkedIn
-            </a>
-            <a
-              href={SITE.socials.dribbble}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(MENU_ROW, "w-fit")}
-            >
+            </TextLink>
+            <TextLink href={SITE.socials.dribbble} external>
               Dribbble
-            </a>
-            <a
-              href={SITE.socials.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(MENU_ROW, "w-fit")}
-            >
+            </TextLink>
+            <TextLink href={SITE.socials.instagram} external>
               Instagram
-            </a>
-            <a
+            </TextLink>
+            <TextLink
               href={`mailto:${SITE.email}`}
+              external
               onClick={onClose}
-              className={cn(MENU_ROW, "inline-flex w-fit items-center gap-2")}
+              leadingIcon={<TextArrow />}
             >
-              <span aria-hidden>→</span>
               Let&apos;s talk
-            </a>
+            </TextLink>
           </div>
         </div>
       </div>

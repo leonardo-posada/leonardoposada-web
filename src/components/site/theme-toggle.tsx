@@ -38,7 +38,7 @@ export function ThemeToggle() {
       <CircleHalfTilt
         weight="light"
         className={cn(
-          "size-4 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "size-4 transition-transform duration-500 ease-out-expo",
           theme === "dark" ? "rotate-180" : "rotate-0",
         )}
       />

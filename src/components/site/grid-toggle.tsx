@@ -2,7 +2,7 @@
 
 import { Angle } from "@phosphor-icons/react/dist/ssr";
 import { cn } from "@/lib/utils";
-import { useGrid } from "@/lib/use-grid";
+import { useGrid } from "@/hooks/use-grid";
 
 /**
  * Navbar button that toggles the 4-column grid overlay. When on, the icon
@@ -26,7 +26,7 @@ export function GridToggle() {
       <Angle
         weight="light"
         className={cn(
-          "size-4 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "size-4 transition-transform duration-500 ease-out-expo",
           visible ? "rotate-180" : "rotate-0",
         )}
       />

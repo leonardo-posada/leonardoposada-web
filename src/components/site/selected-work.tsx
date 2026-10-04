@@ -12,14 +12,12 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.base, ease: EASE.out, delay: 0.3 + index * 0.16 }}
+      data-slug={project.slug}
       className="col-span-2 grid grid-cols-subgrid gap-x-4 gap-y-12 border-t border-border/70 py-16 md:col-span-4 md:gap-x-8 md:gap-y-16"
     >
       {/* col 1 — project name */}
       <div className="col-span-2 md:col-span-1">
-        <h3
-          className="font-light text-foreground text-4xl md:text-5xl"
-          style={{ lineHeight: 1.15, letterSpacing: "-0.04em" }}
-        >
+        <h3 className="font-light text-foreground text-4xl md:text-5xl leading-[1.15] tracking-[-0.04em]">
           {project.name}
         </h3>
       </div>
@@ -28,7 +26,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
       {/* cols 3-4 — description + year + details stacked */}
       <div className="col-span-2 flex flex-col gap-6 text-base md:col-span-2">
-        <p className="font-light text-foreground" style={{ lineHeight: 1.5 }}>
+        <p className="font-light text-foreground leading-[1.5]">
           {project.role}. {project.description}
         </p>
 
@@ -67,18 +65,12 @@ export function SelectedWork() {
           transition={{ ...TRANS_OUT, delay: 0.2 }}
           className="col-span-2 flex flex-col gap-4 md:col-span-2 md:col-start-3"
         >
-          <h2
-            className="font-light text-foreground text-6xl md:text-9xl"
-            style={{ lineHeight: 0.93, letterSpacing: "-0.036em" }}
-          >
+          <h2 className="font-light text-foreground text-6xl md:text-9xl leading-[0.93] tracking-[-0.036em]">
             Selected
             <br />
             Work
           </h2>
-          <p
-            className="font-light text-foreground text-2xl md:text-4xl"
-            style={{ lineHeight: 1.25, letterSpacing: "-0.03em" }}
-          >
+          <p className="font-light text-foreground text-2xl md:text-4xl leading-[1.25] tracking-[-0.03em]">
             10&apos; – present
           </p>
         </motion.div>

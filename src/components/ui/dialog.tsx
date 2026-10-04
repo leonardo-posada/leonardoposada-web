@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 const Dialog = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
 const DialogPortal = DialogPrimitive.Portal;
-const DialogClose = DialogPrimitive.Close;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -34,7 +33,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 flex w-[calc(100%-2rem)] max-h-[calc(100vh-2rem)] flex-col overflow-hidden translate-x-[-50%] translate-y-[-50%] border bg-popover shadow-lg rounded-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out sm:max-w-3xl",
+        "fixed left-1/2 top-1/2 z-50 flex w-[calc(100%-2rem)] max-h-[calc(100vh-2rem)] flex-col overflow-hidden -translate-x-1/2 -translate-y-1/2 border bg-popover shadow-lg rounded-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out sm:max-w-3xl",
         className,
       )}
       {...props}
@@ -76,7 +75,6 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 export {
   Dialog,
   DialogTrigger,
-  DialogClose,
   DialogContent,
   DialogTitle,
   DialogDescription,

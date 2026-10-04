@@ -10,6 +10,18 @@ import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/env";
 import "./globals.css";
 
+/** JSON-LD Person schema · helps search engines understand who owns this site. */
+const PERSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  jobTitle: SITE.role,
+  description: SITE.description,
+  url: SITE_URL,
+  email: `mailto:${SITE.email}`,
+  sameAs: [SITE.socials.linkedin, SITE.socials.dribbble, SITE.socials.instagram],
+} as const;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -56,6 +68,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_LD) }}
+        />
       </head>
       <body className="flex min-h-screen flex-col font-sans">
         <SmoothScroll />
