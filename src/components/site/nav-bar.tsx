@@ -9,11 +9,14 @@ import { SITE } from "@/lib/site";
 import { TRANS_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { PILL_GLASS } from "@/lib/glass";
+import { smoothScrollTo } from "@/lib/scroll";
+import { clearHomeScroll } from "@/lib/home-scroll";
 import { TextLink } from "@/components/ui/text-link";
 import { SITE_CONTAINER } from "./section";
 import { GridToggle } from "./grid-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import { MobileMenu } from "./mobile-menu";
+import { usePageCurtain } from "./page-curtain-provider";
 
 const SMOOTH = "transition-all duration-700 ease-out-expo";
 
@@ -31,8 +34,26 @@ const SMOOTH = "transition-all duration-700 ease-out-expo";
  */
 export function NavBar() {
   const pathname = usePathname();
+  const { navigate } = usePageCurtain();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  /**
+   * Logo click · always lands the user at the top of the home page.
+   * - On home: smooth-scroll to 0.
+   * - On any other route: clear any saved home-scroll (so we don't restore a
+   *   prior position) and curtain-navigate to `/`, which the SmoothScroll
+   *   effect then resolves to scrollY = 0.
+   */
+  const onLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (pathname === "/") {
+      smoothScrollTo(0);
+      return;
+    }
+    clearHomeScroll();
+    navigate("/");
+  };
 
   useEffect(() => {
     const check = () => {
@@ -133,6 +154,7 @@ export function NavBar() {
           <nav className="flex h-16 items-center justify-between">
             <Link
               href="/"
+              onClick={onLogoClick}
               className="text-lg font-bold tracking-tight text-foreground transition-opacity hover:opacity-70"
             >
               {SITE.name}
@@ -149,15 +171,15 @@ export function NavBar() {
       {/* SCROLLED pills · fixed overlay, slides down from above */}
       <div
         className={cn(
-          "fixed inset-x-0 top-0 z-[60] flex h-16 items-center justify-center",
+          "pointer-events-none fixed inset-x-0 top-0 z-[60] flex h-16 items-center justify-center",
           SMOOTH,
           scrolled
             ? "translate-y-4 opacity-100"
-            : "pointer-events-none -translate-y-6 opacity-0",
+            : "-translate-y-6 opacity-0",
         )}
         aria-hidden={!scrolled}
       >
-        <div className="flex items-center gap-3">
+        <div className="pointer-events-auto flex items-center gap-3">
           {/* Left pill · nav links (desktop only) */}
           <div
             className={cn(

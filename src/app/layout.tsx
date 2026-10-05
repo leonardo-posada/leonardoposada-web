@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/footer";
 import { BackToTop } from "@/components/site/back-to-top";
 import { GridOverlay } from "@/components/site/grid-overlay";
 import { SmoothScroll } from "@/components/site/smooth-scroll";
+import { PageCurtainProvider } from "@/components/site/page-curtain-provider";
 import { themeInitScript } from "@/components/site/theme-toggle";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/env";
@@ -74,14 +75,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-screen flex-col font-sans">
-        <SmoothScroll />
-        <NavBar />
-        <main id="top" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <BackToTop />
-        <GridOverlay />
+        <PageCurtainProvider>
+          <SmoothScroll />
+          <NavBar />
+          <main id="top" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <BackToTop />
+          <GridOverlay />
+        </PageCurtainProvider>
       </body>
     </html>
   );

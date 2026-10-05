@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { PROJECTS } from "@/lib/site";
 import { useActiveProject } from "@/hooks/use-active-project";
 import { TextLink } from "@/components/ui/text-link";
+import { usePageCurtain } from "@/components/site/page-curtain-provider";
+import { saveHomeScroll } from "@/lib/home-scroll";
 
 /**
  * Floating "View project" pill at bottom-center of the viewport. Appears when
@@ -19,6 +21,9 @@ export function ActiveProjectPill() {
   const slug = useActiveProject();
   const project = slug ? PROJECTS.find((p) => p.slug === slug) : null;
   const visible = !!project;
+  const { navigate } = usePageCurtain();
+
+  const href = project ? `/work/${project.slug}` : "#";
 
   return (
     <div
@@ -32,11 +37,18 @@ export function ActiveProjectPill() {
     >
       <TextLink
         variant="nav"
-        href={project ? `/work/${project.slug}` : "#"}
+        href={href}
+        onClick={(e) => {
+          if (!project) return;
+          e.preventDefault();
+          // Remember the home scroll position so BackToWork can restore it.
+          saveHomeScroll(window.scrollY);
+          navigate(href);
+        }}
         trailingIcon={<ArrowUpRight weight="light" className="size-4" />}
         className={cn(PILL_GLASS, "px-5 py-2.5")}
       >
-        View {project?.name ?? "project"}
+        View {project?.name ?? "project"} case study
       </TextLink>
     </div>
   );

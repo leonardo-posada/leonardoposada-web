@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowUp } from "@phosphor-icons/react/dist/ssr";
 import { cn } from "@/lib/utils";
 import { PILL_GLASS } from "@/lib/glass";
+import { smoothScrollTo } from "@/lib/scroll";
 
 /**
  * Floating back-to-top arrow wrapped in a liquid-glass pill (same recipe as
@@ -18,7 +19,8 @@ export function BackToTop() {
     const check = () => {
       const target = document.getElementById("selected-work");
       if (!target) {
-        setVisible(false);
+        // Fallback for pages without a selected-work section (e.g. /work/[slug]).
+        setVisible(window.scrollY > 600);
         return;
       }
       const rect = target.getBoundingClientRect();
@@ -54,13 +56,14 @@ export function BackToTop() {
           : "pointer-events-none translate-y-4 opacity-0",
       )}
     >
-      <a
-        href="#top"
+      <button
+        type="button"
+        onClick={() => smoothScrollTo(0)}
         aria-label="Back to top"
         className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         <ArrowUp weight="light" className="size-4" />
-      </a>
+      </button>
     </div>
   );
 }
