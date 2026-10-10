@@ -283,12 +283,21 @@ export const PROJECTS: readonly Project[] = [
       },
       m03: {
         kind: "video",
-        src: "/work/kontigo/cards-video-v6.mp4",
-        poster: "/work/kontigo/cards-static-v5.webp",
+        src: "/work/kontigo/cards.mp4",
+        poster: "/work/kontigo/cards-poster.webp",
       },
-      m04: { src: "/work/kontigo/detail-1.webp" },
-      m05: { src: "/work/kontigo/detail-2.webp" },
-      m06: { src: "/work/kontigo/detail-2.webp" },
+      m04: {
+        src: "/work/kontigo/card-screen-tilt.webp",
+        alt: "Kontigo app · activated KontigoCard tab, two phones laid on a table",
+      },
+      m05: {
+        src: "/work/kontigo/card-system.webp",
+        alt: "Kontigo card system · tier color guide",
+      },
+      m06: {
+        src: "/work/kontigo/card-system.webp",
+        alt: "Kontigo card system · tier color guide",
+      },
     },
   },
 ] as const;

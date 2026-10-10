@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Design System",
   description:
     "Living reference for the leonardoposada-web design system · tokens, components, and conventions.",
+  // Internal documentation · we don't want search engines surfacing the
+  // raw token/component references instead of the portfolio case studies.
+  robots: { index: false, follow: false },
 };
 
 export default function DesignSystemLayout({
