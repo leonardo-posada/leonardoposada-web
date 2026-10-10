@@ -3,7 +3,13 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
-import { PROJECTS, type Project } from "@/lib/site";
+import {
+  PROJECTS,
+  isImageMask,
+  isVideoMask,
+  type Project,
+} from "@/lib/site";
+import { VideoSlot } from "@/components/site/video-slot";
 import { SITE_URL } from "@/lib/env";
 import { Section } from "@/components/site/section";
 import { BackToWorkPill } from "@/components/site/back-to-work-pill";
@@ -27,10 +33,11 @@ export async function generateMetadata({
   const project = PROJECTS.find((p) => p.slug === slug);
   if (!project) return {};
   const url = `/work/${project.slug}`;
-  const images = project.media?.hero
+  const heroImage = isImageMask(project.media?.m01) ? project.media.m01 : undefined;
+  const images = heroImage
     ? [
         {
-          url: project.media.hero,
+          url: heroImage.src,
           width: 1600,
           height: 900,
           alt: `${project.name} — ${project.tagline}`,
@@ -157,6 +164,7 @@ export default async function WorkDetailPage({
 
   const currentIndex = PROJECTS.findIndex((p) => p.slug === project.slug);
   const next: Project = PROJECTS[(currentIndex + 1) % PROJECTS.length];
+  const heroImage = isImageMask(project.media?.m01) ? project.media.m01 : undefined;
 
   const workLd = {
     "@context": "https://schema.org",
@@ -165,9 +173,7 @@ export default async function WorkDetailPage({
     datePublished: project.year,
     description: project.tagline,
     url: `${SITE_URL}/work/${project.slug}`,
-    image: project.media?.hero
-      ? `${SITE_URL}${project.media.hero}`
-      : undefined,
+    image: heroImage ? `${SITE_URL}${heroImage.src}` : undefined,
     author: { "@type": "Person", name: "Leonardo Posada" },
     keywords: project.services.join(", "),
   };
@@ -205,15 +211,15 @@ export default async function WorkDetailPage({
         </CaseSection>
       </Reveal>
 
-      {/* ─── First detail image · breakout between sections ───────────── */}
-      {project.media?.detail1 && (
+      {/* ─── m02 · big detail between 02 Challenge and 03 Approach ─────── */}
+      {isImageMask(project.media?.m02) && (
         <Reveal>
           <Section className="pb-24 md:pb-32">
             <div className="col-span-2 md:col-span-4">
               <CaptionedImage
-                src={project.media.detail1}
-                alt={`${project.name} — ${project.media.captions?.detail1 ?? "detail"}`}
-                caption={project.media.captions?.detail1}
+                src={project.media.m02.src}
+                alt={project.media.m02.alt ?? `${project.name} — m02`}
+                caption={project.media.m02.caption}
               />
             </div>
           </Section>
@@ -263,20 +269,83 @@ export default async function WorkDetailPage({
         </Reveal>
       )}
 
-      {/* ─── Second detail image ───────────────────────────────────────── */}
-      {project.media?.detail2 && (
-        <Reveal>
-          <Section className="pb-24 md:pb-32">
-            <div className="col-span-2 md:col-span-4">
-              <CaptionedImage
-                src={project.media.detail2}
-                alt={`${project.name} — ${project.media.captions?.detail2 ?? "detail"}`}
-                caption={project.media.captions?.detail2}
-              />
-            </div>
-          </Section>
-        </Reveal>
-      )}
+      {/* ─── m03 + m04..m09 grid · one Section so they share the SITE_GRID
+       *    gap (gap-4 mobile, gap-8 desktop) · same rhythm as the home
+       *    ProjectMedia. Captions intentionally omitted on this block. */}
+      {(() => {
+        const m = project.media;
+        if (!m) return null;
+        // Walk m04..m09; videos and full-size images render stacked
+        // full-width, half-size images collect into the grid at the end.
+        const tail = [m.m04, m.m05, m.m06, m.m07, m.m08, m.m09];
+        const extraVideos = tail.filter(isVideoMask);
+        const tailImages = tail.filter(isImageMask);
+        const fullImages = tailImages.filter((img) => img.size === "full");
+        const gridImages = tailImages.filter((img) => img.size !== "full");
+        if (
+          !m.m03 &&
+          extraVideos.length === 0 &&
+          fullImages.length === 0 &&
+          gridImages.length === 0
+        )
+          return null;
+        return (
+          <Reveal>
+            <Section className="pb-24 md:pb-32">
+              {m.m03 && (
+                <div className="col-span-2 md:col-span-4">
+                  {isVideoMask(m.m03) ? (
+                    <VideoSlot mask={m.m03} />
+                  ) : (
+                    <CaptionedImage
+                      src={m.m03.src}
+                      alt={m.m03.alt ?? `${project.name} — m03`}
+                    />
+                  )}
+                </div>
+              )}
+              {fullImages.map((img, i) => (
+                <div
+                  key={`full-${i}-${img.src}`}
+                  className="col-span-2 md:col-span-4"
+                >
+                  <CaptionedImage
+                    src={img.src}
+                    alt={img.alt ?? `${project.name} — full`}
+                    caption={img.caption}
+                  />
+                </div>
+              ))}
+              {extraVideos.map((v, i) => (
+                <div
+                  key={`video-${i}-${v.src}`}
+                  className="col-span-2 md:col-span-4"
+                >
+                  <VideoSlot mask={v} />
+                </div>
+              ))}
+              {gridImages.map((img, i) => {
+                const isLastOdd =
+                  i === gridImages.length - 1 && gridImages.length % 2 === 1;
+                return (
+                  <div
+                    key={`grid-${i}`}
+                    className={cn(
+                      "col-span-2",
+                      isLastOdd ? "md:col-span-4" : "md:col-span-2",
+                    )}
+                  >
+                    <CaptionedImage
+                      src={img.src}
+                      alt={img.alt ?? `${project.name} — grid`}
+                    />
+                  </div>
+                );
+              })}
+            </Section>
+          </Reveal>
+        );
+      })()}
 
       {/* ─── 05 · Credits ──────────────────────────────────────────────── */}
       {(project.credits && project.credits.length > 0) ||

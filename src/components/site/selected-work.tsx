@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PROJECTS, type Project } from "@/lib/site";
+import { PROJECTS, isImageMask, type Project } from "@/lib/site";
 import { EASE, DURATION } from "@/lib/motion";
 import { Section } from "./section";
 import { Reveal } from "./reveal";
@@ -49,12 +49,13 @@ function ProjectRow({ project }: { project: Project }) {
         </div>
       </div>
 
-      {/* media below (full 4 cols) */}
+      {/* media below (full 4 cols). Animation masks render only on the detail
+       *  page, not the home list — show a placeholder here instead. */}
       <ProjectMedia
         slot={project.name}
-        hero={project.media?.hero}
-        detail1={project.media?.detail1}
-        detail2={project.media?.detail2}
+        hero={isImageMask(project.media?.m01) ? project.media.m01.src : undefined}
+        detail1={isImageMask(project.media?.m02) ? project.media.m02.src : undefined}
+        detail2={isImageMask(project.media?.m03) ? project.media.m03.src : undefined}
       />
     </motion.article>
   );

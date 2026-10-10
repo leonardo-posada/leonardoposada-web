@@ -13,12 +13,61 @@ export const SITE = {
   },
 } as const;
 
-export type ProjectImageKey = "hero" | "detail1" | "detail2";
+/**
+ * A single image slot in the project media set. We number them `m01, m02, …`
+ * so the whole team shares one convention for talking about a project's visuals
+ * — "swap m05", "add m08", etc.
+ *
+ * Layout (template decides, data stays dumb):
+ *   m01 · Hero · full-width 16:10, caption rendered. Also used by the home
+ *        ProjectMedia row.
+ *   m02 · Big detail between 02 Challenge and 03 Approach, caption rendered.
+ *        Also used by the home ProjectMedia row (left half).
+ *   m03 · Big detail after the Metrics block, caption NOT rendered. Also used
+ *        by the home ProjectMedia row (right half).
+ *   m04+ · Half-width grid cells below m03. The template auto-stretches the
+ *        last cell to full-width when the grid count is odd.
+ */
+/** Static image slot (default kind). `size: "full"` stacks the image
+ *  full-width above the half-width grid; omit (or "half") for the grid. */
+export type ImageMask = {
+  kind?: "image";
+  src: string;
+  alt?: string;
+  caption?: string;
+  size?: "full" | "half";
+};
 
-export type ProjectMedia = Partial<
-  Record<ProjectImageKey, string>
-> & {
-  captions?: Partial<Record<ProjectImageKey, string>>;
+/** Autoplaying, looping, muted inline video slot. Rendered full-width.
+ *  `poster` shows as a static frame when autoplay is blocked — iOS Low
+ *  Power Mode suspends autoplay even for muted+playsinline videos. */
+export type VideoMask = {
+  kind: "video";
+  src: string;
+  caption?: string;
+  poster?: string;
+};
+
+export type Mask = ImageMask | VideoMask;
+
+export function isImageMask(m?: Mask): m is ImageMask {
+  return !!m && m.kind !== "video";
+}
+
+export function isVideoMask(m?: Mask): m is VideoMask {
+  return !!m && m.kind === "video";
+}
+
+export type ProjectMedia = {
+  m01?: Mask;
+  m02?: Mask;
+  m03?: Mask;
+  m04?: Mask;
+  m05?: Mask;
+  m06?: Mask;
+  m07?: Mask;
+  m08?: Mask;
+  m09?: Mask;
 };
 
 export type ProjectMetric = {
@@ -106,16 +155,21 @@ export const PROJECTS: readonly Project[] = [
       },
     ],
     media: {
-      hero: "/work/yuno/hero.webp",
-      detail1: "/work/yuno/detail-1.webp",
-      detail2: "/work/yuno/detail-2.webp",
-      captions: {
-        hero: "Operations dashboard · the control center merchants use to monitor payment performance in real time.",
-        detail1:
-          "Checkout surface · unified API hides provider complexity behind a single payment UI.",
-        detail2:
-          "Internal tooling · product used by Yuno's revenue team to monitor accounts.",
+      m01: {
+        src: "/work/yuno/hero.webp",
+        caption:
+          "Operations dashboard · the control center merchants use to monitor payment performance in real time.",
       },
+      m02: {
+        src: "/work/yuno/detail-1.webp",
+        caption:
+          "Checkout surface · unified API hides provider complexity behind a single payment UI.",
+      },
+      m03: { src: "/work/yuno/detail-2.webp" },
+      m04: { src: "/work/yuno/detail-1.webp" },
+      m05: { src: "/work/yuno/detail-2.webp" },
+      m06: { src: "/work/yuno/detail-2.webp" },
+      m07: { src: "/work/yuno/detail-1.webp" },
     },
   },
   {
@@ -162,14 +216,20 @@ export const PROJECTS: readonly Project[] = [
       },
     ],
     media: {
-      hero: "/work/rappi/hero.webp",
-      detail1: "/work/rappi/detail-1.webp",
-      detail2: "/work/rappi/detail-2.webp",
-      captions: {
-        hero: "RappiRestaurants · the vertical that started it all.",
-        detail1: "Rappi Design System · unified component library across 20+ verticals.",
-        detail2: "RappiPay · financial services launched in 2019.",
+      m01: {
+        src: "/work/rappi/hero.webp",
+        caption: "RappiRestaurants · the vertical that started it all.",
       },
+      m02: {
+        src: "/work/rappi/detail-1.webp",
+        caption:
+          "Rappi Design System · unified component library across 20+ verticals.",
+      },
+      m03: { src: "/work/rappi/detail-2.webp" },
+      m04: { src: "/work/rappi/detail-1.webp" },
+      m05: { src: "/work/rappi/detail-2.webp" },
+      m06: { src: "/work/rappi/detail-2.webp" },
+      m07: { src: "/work/rappi/detail-1.webp" },
     },
   },
   {
@@ -212,14 +272,23 @@ export const PROJECTS: readonly Project[] = [
       },
     ],
     media: {
-      hero: "/work/kontigo/hero.webp",
-      detail1: "/work/kontigo/detail-1.webp",
-      detail2: "/work/kontigo/detail-2.webp",
-      captions: {
-        hero: "Card activation · stablecoin-funded Visa debit card.",
-        detail1: "Home · dollar savings and spending with blockchain under the hood.",
-        detail2: "Onboarding · neobank-level simplicity, crypto-native plumbing.",
+      m01: {
+        src: "/work/kontigo/hero.webp",
+        caption: "Card activation · stablecoin-funded Visa debit card.",
       },
+      m02: {
+        src: "/work/kontigo/detail-1.webp",
+        caption:
+          "Home · dollar savings and spending with blockchain under the hood.",
+      },
+      m03: {
+        kind: "video",
+        src: "/work/kontigo/cards-video-v6.mp4",
+        poster: "/work/kontigo/cards-static-v5.webp",
+      },
+      m04: { src: "/work/kontigo/detail-1.webp" },
+      m05: { src: "/work/kontigo/detail-2.webp" },
+      m06: { src: "/work/kontigo/detail-2.webp" },
     },
   },
 ] as const;

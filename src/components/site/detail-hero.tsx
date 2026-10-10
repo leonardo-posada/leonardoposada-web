@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { REVEAL, TRANS_OUT } from "@/lib/motion";
-import type { Project } from "@/lib/site";
+import { isImageMask, type Project } from "@/lib/site";
 import { Section } from "./section";
 import { BackToWorkLink } from "./back-to-work-link";
 import { usePageCurtain } from "./page-curtain-provider";
@@ -99,7 +99,7 @@ export function DetailHero({ project }: { project: Project }) {
         </motion.div>
       </Section>
 
-      {project.media?.hero && (
+      {isImageMask(project.media?.m01) && (
         <Section className="pb-24 md:pb-32">
           <motion.div
             {...common}
@@ -109,8 +109,8 @@ export function DetailHero({ project }: { project: Project }) {
             <figure className="flex flex-col gap-4">
               <div className="overflow-hidden rounded-xl bg-muted">
                 <Image
-                  src={project.media.hero}
-                  alt={`${project.name} — hero`}
+                  src={project.media.m01.src}
+                  alt={project.media.m01.alt ?? `${project.name} — m01`}
                   width={1600}
                   height={900}
                   sizes="(min-width: 1024px) 1600px, 100vw"
@@ -118,9 +118,9 @@ export function DetailHero({ project }: { project: Project }) {
                   priority
                 />
               </div>
-              {project.media.captions?.hero && (
+              {project.media.m01.caption && (
                 <figcaption className="max-w-xl text-sm font-light text-muted-foreground leading-[1.5]">
-                  {project.media.captions.hero}
+                  {project.media.m01.caption}
                 </figcaption>
               )}
             </figure>
