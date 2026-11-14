@@ -17,6 +17,7 @@ import { Section } from "@/components/site/section";
 import { BackToWorkPill } from "@/components/site/back-to-work-pill";
 import { DeviceMockupGallery } from "@/components/site/device-mockup-gallery";
 import { Cards3D } from "@/components/kontigo/compositions/cards-3d";
+import { KontigoRewardWidgets, KontigoInvestmentsPhone } from "@/components/kontigo/widgets/investment-widgets";
 import { KontigoWidgetShowcase } from "@/components/kontigo/widgets/widget-showcase";
 import { KontigoWebsiteGallery } from "@/components/site/kontigo-website-gallery";
 import { DetailHero } from "@/components/site/detail-hero";
@@ -211,6 +212,7 @@ export default async function WorkDetailPage({
 
       {project.slug === "kontigo" && <>
         <Section className="pb-16 md:pb-24"><div className="col-span-2 md:col-span-4"><LuxuryMedia><KontigoWidgetShowcase /></LuxuryMedia></div></Section>
+        <Section className="pb-16 md:pb-24"><div className="col-span-2"><LuxuryMedia><KontigoRewardWidgets /></LuxuryMedia></div><div className="col-span-2"><LuxuryMedia><KontigoInvestmentsPhone /></LuxuryMedia></div></Section>
         <KontigoWebsiteGallery />
       </>}
 
