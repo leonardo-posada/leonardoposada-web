@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import welcomeLayout from "./investments/welcome-layout.json";
 import { useEffect, useRef, useState } from "react";
 import { KontigoMockupBackground } from "@/components/site/kontigo-mockup-background";
 import { PhoneMockup } from "@/components/site/phone-mockup";
@@ -69,14 +71,8 @@ export function KontigoRewardWidgets() {
 
 function InvestmentsWelcome() {
   return <div className={styles.screen} data-investments-welcome>
-    <header className={styles.header}><span>‹</span><span>Inversiones</span><span>···</span></header>
-    <div className={styles.welcome}>
-      <h2>Bienvenido a<br />Inversiones</h2>
-      <p>Crea tu portafolio de ahorro e inversión. Invierte en acciones, commodities, ETFs y Bitcoin.</p>
-      <InvestmentsCoinCarousel finish="gold" />
-      <div className={styles.primary}>Empezar</div><div className={styles.secondary}>¿Cómo funciona?</div>
-    </div>
-    <div className={styles.homeIndicator} />
+    <Image src="/work/kontigo/screens/investments-welcome-interface.png" alt="Bienvenido a Inversiones — pantalla original de Kontigo" fill sizes="(min-width: 1280px) 900px, 85vw" />
+    <div className={styles.coinSlot} style={{left:welcomeLayout.x,top:welcomeLayout.y,width:welcomeLayout.width,height:welcomeLayout.height}}><InvestmentsCoinCarousel finish="gold" /></div>
   </div>;
 }
 
