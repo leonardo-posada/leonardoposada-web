@@ -77,5 +77,5 @@ function InvestmentsWelcome() {
 }
 
 export function KontigoInvestmentsPhone() {
-  return <PhoneMockup name="Kontigo · Bienvenido a Inversiones" variant="front" background="kontigo" outlineBackground framingScale={1.18} screenContent={<InvestmentsWelcome />} />;
+  return <PhoneMockup hideCaption name="Kontigo · Bienvenido a Inversiones" variant="front" background="kontigo" outlineBackground framingScale={1.18} screenContent={<InvestmentsWelcome />} />;
 }

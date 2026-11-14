@@ -19,7 +19,7 @@ const PHONE_FRAMING = {
 
 /** Standalone vector phone, matching the desktop image workflow. Screen content is a separate 396×858 (9:19.5) layer.
  * All geometry is relative to the same 1448×960 artboard, including hover. */
-export function PhoneMockup({ screenContent, screen, name, variant = "front", background = "studio", framingScale, outlineBackground = false, perspectiveOutline = false }: { screenContent?: ReactNode; perspectiveOutline?: boolean; outlineBackground?: boolean; framingScale?: number; screen?: Mask; name: string; background?: MockupBackground; variant?: keyof typeof PHONE_VARIANTS }) {
+export function PhoneMockup({ hideCaption = false, screenContent, screen, name, variant = "front", background = "studio", framingScale, outlineBackground = false, perspectiveOutline = false }: { hideCaption?: boolean; screenContent?: ReactNode; perspectiveOutline?: boolean; outlineBackground?: boolean; framingScale?: number; screen?: Mask; name: string; background?: MockupBackground; variant?: keyof typeof PHONE_VARIANTS }) {
   const id = `studio-01.phone.${variant}` as const;
   const scene = PHONE_VARIANTS[variant];
   const framing = PHONE_FRAMING[variant];
@@ -58,7 +58,7 @@ export function PhoneMockup({ screenContent, screen, name, variant = "front", ba
         </div>
         </div>
       </div>
-      <MockupCaption id={id} caption={screen?.caption} />
+      {!hideCaption && <MockupCaption id={id} caption={screen?.caption} />}
     </figure>
   );
 }
