@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { KontigoMockupBackground } from "@/components/site/kontigo-mockup-background";
 import { createClubCardCascade } from "./_cards3d/cascade-scene";
 
 /**
@@ -19,9 +20,13 @@ import { createClubCardCascade } from "./_cards3d/cascade-scene";
 export function Cards3D({
   aspectRatio = "4 / 3",
   canvasAspect = "4 / 3",
+  outlineBackground = false,
+  loop = false,
 }: {
   aspectRatio?: string;
   canvasAspect?: string;
+  outlineBackground?: boolean;
+  loop?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -30,6 +35,8 @@ export function Cards3D({
     if (!canvas) return;
 
     let cancelled = false;
+    let intersection: IntersectionObserver | undefined;
+    let timer: ReturnType<typeof setInterval> | undefined;
     let controller: Awaited<ReturnType<typeof createClubCardCascade>> | undefined;
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -45,6 +52,15 @@ export function Cards3D({
         );
         if (cancelled || !controller) return;
         controller.setActive(true);
+        if (loop) {
+          let visible = false;
+          intersection = new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            controller?.setActive(visible);
+          }, {threshold:.1});
+          intersection.observe(canvas);
+          timer = setInterval(() => {if(visible && !document.hidden) controller?.replay();},6800);
+        }
       } catch (err) {
         console.error("Cards3D scene failed to initialise", err);
       }
@@ -52,9 +68,11 @@ export function Cards3D({
 
     return () => {
       cancelled = true;
+      intersection?.disconnect();
+      if(timer) clearInterval(timer);
       controller?.dispose();
     };
-  }, []);
+  }, [loop]);
 
   return (
     <div
@@ -67,6 +85,7 @@ export function Cards3D({
         borderRadius: "var(--radius-xl, 14px)",
       }}
     >
+      {outlineBackground && <KontigoMockupBackground />}
       {/* WebGL canvas stays at its native aspect, centered. The outer
           container's extra height spills into empty padding above/below. */}
       <div

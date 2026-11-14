@@ -16,6 +16,7 @@ import { SITE_URL } from "@/lib/env";
 import { Section } from "@/components/site/section";
 import { BackToWorkPill } from "@/components/site/back-to-work-pill";
 import { DeviceMockupGallery } from "@/components/site/device-mockup-gallery";
+import { Cards3D } from "@/components/kontigo/compositions/cards-3d";
 import { KontigoWidgetShowcase } from "@/components/kontigo/widgets/widget-showcase";
 import { KontigoWebsiteGallery } from "@/components/site/kontigo-website-gallery";
 import { DetailHero } from "@/components/site/detail-hero";
@@ -232,7 +233,7 @@ export default async function WorkDetailPage({
       </Reveal>
 
       {/* ─── m02 · big detail between 02 Challenge and 03 Approach ─────── */}
-      {isImageMask(project.media?.m02) && (
+      {project.slug !== "kontigo" && isImageMask(project.media?.m02) && (
         <Reveal>
           <Section className="pb-24 md:pb-32">
             <div className="col-span-2 md:col-span-4">
@@ -297,7 +298,7 @@ export default async function WorkDetailPage({
         if (!m) return null;
         // Walk m04..m09; videos and full-size images render stacked
         // full-width, half-size images collect into the grid at the end.
-        const tail = [m.m04, m.m05, m.m06, m.m07, m.m08, m.m09];
+        const tail = [...(project.slug === "kontigo" ? [] : [m.m04, m.m05]), m.m06, m.m07, m.m08, m.m09];
         const extraVideos = tail.filter(isVideoMask);
         const tailImages = tail.filter(isImageMask);
         const fullImages = tailImages.filter((img) => img.size === "full");
@@ -315,7 +316,7 @@ export default async function WorkDetailPage({
               {m.m03 && (
                 <div className="col-span-2 md:col-span-4">
                   {isVideoMask(m.m03) ? (
-                    <VideoSlot mask={m.m03} />
+                    project.slug === "kontigo" ? <LuxuryMedia><Cards3D aspectRatio="2560 / 2160" canvasAspect="4 / 3" outlineBackground loop /></LuxuryMedia> : <VideoSlot mask={m.m03} />
                   ) : (
                     <CaptionedImage
                       src={m.m03.src}
