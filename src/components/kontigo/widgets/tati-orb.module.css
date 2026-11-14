@@ -1,0 +1,3 @@
+.orb{display:inline-block;position:relative;flex-shrink:0;isolation:isolate;pointer-events:none}
+.orb>img,.orb>canvas{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:contain}
+.orb>canvas{opacity:0}
