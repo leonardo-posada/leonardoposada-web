@@ -5,14 +5,17 @@ import { PROJECTS, isImageMask, type Project } from "@/lib/site";
 import { EASE, DURATION } from "@/lib/motion";
 import { Section } from "./section";
 import { Reveal } from "./reveal";
+import { LuxuryLine } from "./luxury-motion";
 import { ProjectMedia } from "./project-media";
 
 function ProjectRow({ project }: { project: Project }) {
+  const media = project.homeMedia ?? project.media;
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
+      // Galleries can exceed the viewport; reveal as soon as the row enters.
+      viewport={{ once: true, amount: "some" }}
       transition={{ duration: DURATION.base, ease: EASE.out }}
       data-slug={project.slug}
       className="col-span-2 grid grid-cols-subgrid gap-x-4 gap-y-12 border-t border-border/70 py-16 md:col-span-4 md:gap-x-8 md:gap-y-16"
@@ -20,7 +23,7 @@ function ProjectRow({ project }: { project: Project }) {
       {/* col 1 — project name */}
       <div className="col-span-2 md:col-span-1">
         <h3 className="font-light text-foreground text-4xl md:text-5xl leading-[1.15] tracking-[-0.04em]">
-          {project.name}
+          <LuxuryLine>{project.name}</LuxuryLine>
         </h3>
       </div>
 
@@ -53,9 +56,12 @@ function ProjectRow({ project }: { project: Project }) {
        *  page, not the home list — show a placeholder here instead. */}
       <ProjectMedia
         slot={project.name}
-        hero={isImageMask(project.media?.m01) ? project.media.m01.src : undefined}
-        detail1={isImageMask(project.media?.m02) ? project.media.m02.src : undefined}
-        detail2={isImageMask(project.media?.m03) ? project.media.m03.src : undefined}
+        bottomImage={project.slug === "kontigo" ? project.media?.m05?.src : undefined}
+        deviceMix={project.slug === "rappi" ? "phone" : project.slug === "yuno" ? "desktop" : "mixed"}
+        desktopMockup={project.homeMockup ?? project.desktopMockup}
+        hero={isImageMask(media?.m01) ? media.m01.src : undefined}
+        detail1={isImageMask(media?.m02) ? media.m02.src : undefined}
+        detail2={isImageMask(media?.m03) ? media.m03.src : undefined}
       />
     </motion.article>
   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "@phosphor-icons/react/dist/ssr";
+import { RollingIcon } from "@/components/ui/rolling-icon";
 import { cn } from "@/lib/utils";
 import { PILL_GLASS } from "@/lib/glass";
 import { smoothScrollTo } from "@/lib/scroll";
@@ -60,9 +61,9 @@ export function BackToTop() {
         type="button"
         onClick={() => smoothScrollTo(0)}
         aria-label="Back to top"
-        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        className="roll-hover inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
-        <ArrowUp weight="light" className="size-4" />
+        <RollingIcon><ArrowUp weight="light" className="size-4" /></RollingIcon>
       </button>
     </div>
   );

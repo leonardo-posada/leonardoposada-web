@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1448" height="1086" viewBox="0 0 1448 1086" fill="none">
+<g transform="translate(1448 0) scale(-1 1)">
+  <title>Studio 01 · Desktop · Right</title>
+  <defs>
+    <linearGradient id="stem" x1="572" y1="880" x2="842" y2="880" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dfe1e3"/><stop offset="1" stop-color="#c1c5c9"/>
+    </linearGradient>
+    <linearGradient id="contact" x1="0" y1="766" x2="0" y2="850" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#636b74" stop-opacity=".22"/><stop offset="1" stop-color="#636b74" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="1333" y1="420" x2="1348" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d0d2d4"/><stop offset="1" stop-color="#e3e4e5"/>
+    </linearGradient>
+    <linearGradient id="underside" x1="0" y1="760" x2="0" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#adb3b8"/><stop offset="1" stop-color="#c9ccce"/>
+    </linearGradient>
+  </defs>
+  <path fill="#dadbde" d="M0 0h1448v1086H0z"/>
+  <!-- Broad straight riser; its foot is concealed by the foreground plinth. -->
+  <!-- Visible thickness is on the right, matching the display housing. -->
+  <path d="M842 747.93L854 752V1060.37L842 1056.37Z" fill="#e8eaec"/>
+  <path d="M574 746L842 747.93V1056.37L574 1045Z" fill="url(#stem)"/>
+  <path d="M574 746L842 747.93V1056.37L574 1045Z" fill="url(#contact)"/>
+  <!-- Original right side, top edge, front contour and screen coordinates. -->
+  <path d="M1325 56L1341 62Q1348 65 1348 73V763Q1348 775 1337 779L1325 770Q1333 769 1333 762V64Q1333 56 1325 56Z" fill="url(#edge)"/>
+  <!-- Underside follows the actual front bottom edge and joins the sidewall.
+       At the far left it tapers into the rounded corner instead of forming a wedge. -->
+  <path d="M113 752Q113 759.93 121 760L1325 770Q1333 770.07 1333 762L1348 763Q1348 775 1337 779L129 766Q116 765.9 113 752Z" fill="url(#underside)"/>
+  <path d="M121 137L1325 56Q1333 55.46 1333 64V762Q1333 770.07 1325 770L121 760Q113 759.93 113 752V145Q113 137.54 121 137Z" fill="#171a1b"/>
+  <path d="M123 144.865L1323 64.135Q1325 64 1325 66V760Q1325 762 1323 761.983L123 752.017Q121 752 121 750V147Q121 145 123 144.865Z" fill="#fafafa"/>
+  <!-- Foreground plinth follows the reference composition from the opposite
+       viewing side: the broad edge rises toward the right-hand corner,
+       and the short return face continues down out of the crop. -->
+  <path d="M0 1035L1298 990V1086H0Z" fill="#c0c4c7"/>
+  <path d="M1298 990L1448 1060V1086H1298Z" fill="#e9ecee"/>
+  <path d="M0 1035L1298 990L1448 1060" stroke="#d3d6d8" stroke-width="1"/>
+</g>
+</svg>

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { registerLenis } from "@/lib/scroll";
-import { consumeHomeScroll } from "@/lib/home-scroll";
+import { clearHomeScroll, consumeHomeScroll } from "@/lib/home-scroll";
 
 /**
  * Global smooth-scroll wrapper.
@@ -19,6 +19,7 @@ import { consumeHomeScroll } from "@/lib/home-scroll";
  */
 export function SmoothScroll() {
   const pathname = usePathname();
+  const previousPath = useRef<string | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -64,14 +65,16 @@ export function SmoothScroll() {
   // was saved (so BackToWork from a detail page returns them to where they
   // were viewing a project).
   useEffect(() => {
+    const returningHome = previousPath.current !== null && previousPath.current !== "/" && pathname === "/";
+    if (previousPath.current === null && pathname === "/") clearHomeScroll();
+    previousPath.current = pathname;
     if (window.location.hash) return;
-    const target =
-      pathname === "/" ? (consumeHomeScroll() ?? 0) : 0;
+    const target = returningHome ? (consumeHomeScroll() ?? 0) : 0;
     const lenis = lenisRef.current;
     if (lenis) {
       lenis.scrollTo(target, { immediate: true });
     } else {
-      window.scrollTo(0, target);
+      window.scrollTo({ top: target, behavior: "instant" });
     }
   }, [pathname]);
 

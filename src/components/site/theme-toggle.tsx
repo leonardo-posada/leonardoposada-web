@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { CircleHalfTilt } from "@phosphor-icons/react/dist/ssr";
+import { RollingIcon } from "@/components/ui/rolling-icon";
 import { cn } from "@/lib/utils";
 
 type Theme = "light" | "dark";
@@ -11,6 +12,28 @@ type Phase = "idle" | "falling" | "rising";
 /** Curtain fall/rise duration · also the toggle lockout window. */
 const DURATION = 550;
 const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+const THEME_EVENT = "portfolio-theme-change";
+
+function subscribeTheme(onChange: () => void) {
+  const device = window.matchMedia("(prefers-color-scheme: dark)");
+  const followDevice = () => {
+    let saved: string | null = null;
+    try { saved = localStorage.getItem("theme"); } catch {}
+    if (saved === "light" || saved === "dark") return;
+    document.documentElement.classList.toggle("dark", device.matches);
+    document.documentElement.style.colorScheme = device.matches ? "dark" : "light";
+    window.dispatchEvent(new Event(THEME_EVENT));
+  };
+  window.addEventListener(THEME_EVENT, onChange);
+  device.addEventListener("change", followDevice);
+  return () => {
+    window.removeEventListener(THEME_EVENT, onChange);
+    device.removeEventListener("change", followDevice);
+  };
+}
+const getTheme = (): Theme => document.documentElement.classList.contains("dark") ? "dark" : "light";
+const getServerTheme = () => null;
 
 /**
  * Theme toggle with a "sheet" transition. A fullscreen overlay tinted with
@@ -23,18 +46,9 @@ const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
  * Respects prefers-reduced-motion (skips the sheet, switches directly).
  */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme | null>(null);
+  const theme = useSyncExternalStore(subscribeTheme, getTheme, getServerTheme);
   const [phase, setPhase] = useState<Phase>("idle");
   const [curtainColor, setCurtainColor] = useState<string>("transparent");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setTheme(
-      document.documentElement.classList.contains("dark") ? "dark" : "light",
-    );
-    setMounted(true);
-  }, []);
-
   const toggle = () => {
     if (phase !== "idle" || !theme) return;
     const next: Theme = theme === "dark" ? "light" : "dark";
@@ -44,7 +58,8 @@ export function ThemeToggle() {
       try {
         localStorage.setItem("theme", t);
       } catch {}
-      setTheme(t);
+      document.documentElement.style.colorScheme = t;
+      window.dispatchEvent(new Event(THEME_EVENT));
     };
 
     const reduced = window.matchMedia(
@@ -96,44 +111,36 @@ export function ThemeToggle() {
 
   return (
     <>
-      {mounted && createPortal(curtain, document.body)}
+      {createPortal(curtain, document.body)}
       <button
         type="button"
         onClick={toggle}
         aria-label={
           theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
         }
-        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="roll-hover inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <CircleHalfTilt
+        <RollingIcon><CircleHalfTilt
           weight="light"
           className={cn(
             "size-4 transition-transform duration-500 ease-out-expo",
             theme === "dark" ? "rotate-180" : "rotate-0",
           )}
-        />
+        /></RollingIcon>
       </button>
     </>
   );
 }
 
-/**
- * Inline script for `<head>` that applies the correct theme class BEFORE
- * React hydrates, preventing a flash of the wrong mode.
- *
- * Priority: explicit user choice (localStorage) → time of day (dark 18:00–05:00,
- * light 05:00–18:00 in the visitor's local time). The old prefers-color-scheme
- * fallback is intentionally dropped so the "natural light" experience is
- * consistent regardless of the visitor's OS setting.
- */
+/** Apply the saved manual choice or device preference before the first paint. */
 export const themeInitScript = `
-(function(){try{
-  var t=localStorage.getItem('theme');
-  if(t==='dark'){
-    document.documentElement.classList.add('dark');
-  } else if(!t){
-    var h=new Date().getHours();
-    if(h>=18||h<5) document.documentElement.classList.add('dark');
+(function(){
+  var t;
+  try { t=localStorage.getItem('theme'); } catch(e) {}
+  if(t!=='light' && t!=='dark') {
+    t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
   }
-}catch(e){}})();
+  document.documentElement.classList.toggle('dark',t==='dark');
+  document.documentElement.style.colorScheme=t;
+})();
 `;

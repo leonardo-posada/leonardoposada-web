@@ -23,3 +23,9 @@ export function smoothScrollTo(target: number | string, duration = 1.2) {
   const y = typeof target === "number" ? target : 0;
   window.scrollTo({ top: y, behavior: "smooth" });
 }
+
+/** Reset both native position and Lenis momentum before revealing the page. */
+export function resetScrollPosition(y = 0) {
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+  else window.scrollTo({ top: y, behavior: "instant" });
+}

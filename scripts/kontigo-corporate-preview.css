@@ -1,0 +1,50 @@
+/* Give the balance figure a stronger visual hierarchy. */
+.corporate .balance-amount {
+  font-size: clamp(56px, 5.5vw, 88px);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.corporate .balance-amount > span:not(.motion-value) {
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.corporate .balance-amount .motion-value { font-size: inherit; letter-spacing: inherit; }
+
+
+.overview-grid .stats strong.positive { color: var(--color-text-fg); }
+
+.balance { position: relative; }
+.portfolio-net-flow {
+  position: absolute;
+  top: auto;
+  bottom: 24px;
+  right: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.portfolio-net-flow > span { color: var(--color-text-muted-fg); font-size: 12px; }
+.portfolio-net-flow strong { color: var(--color-text-fg); font-size: 30px; line-height: 1.2; letter-spacing: -.025em; font-weight: 500; }
+.portfolio-net-flow strong small { font-size: 14px; letter-spacing: 0; font-weight: 400; }
+@media (max-width: 1000px) {
+  .portfolio-net-flow { position: static; align-items: flex-start; margin: 24px 0 0; }
+}
+
+.portfolio-balance-art { position:absolute; width:260px; height:225px; left:65%; top:24px; transform:translateX(-50%); pointer-events:none; }
+.portfolio-balance-art svg { display:block; width:100%; height:100%; }
+@media (max-width:1200px) { .portfolio-balance-art { display:none; } }
+
+/* Compact profile header for the portfolio dashboard. */
+.header-profile .profile-name small { display:none; }
+.header-profile [data-slot="avatar"] { width:28px!important; height:28px!important; min-width:28px; flex-shrink:0; }
+
+.ai-launcher { display:none!important; }
+
+.corporate .header-profile .profile-name { font-size:12px; font-weight:400; }
+
+/* Keep the card details airy and its action beside the relevant information. */
+.portfolio-operations-card .team-card-stage { margin-bottom:28px; }
+.portfolio-operations-card > [data-slot="block-body"] { flex:0 0 auto; }
+.portfolio-operations-card > [data-slot="block-footer"] { margin-top:24px; }

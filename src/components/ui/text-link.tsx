@@ -1,5 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
+import { RollingIcon } from "./rolling-icon";
+import { RollingText } from "./rolling-text";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +29,7 @@ const INNER_UNDERLINE_FORCED = "after:scale-x-100";
 type BaseProps = VariantProps<typeof textLinkVariants> & {
   href: string;
   external?: boolean;
+  roll?: boolean;
   leadingIcon?: React.ReactNode;
   trailingIcon?: React.ReactNode;
   /** Force a visual state for showcase purposes (used in /design-system). */
@@ -42,6 +45,7 @@ export function TextLink({
   href,
   variant = "prominent",
   external,
+  roll = false,
   leadingIcon,
   trailingIcon,
   pseudo,
@@ -51,6 +55,7 @@ export function TextLink({
 }: TextLinkProps) {
   const classes = cn(
     textLinkVariants({ variant }),
+    roll && "roll-hover",
     pseudo === "hover" && "text-foreground",
     pseudo === "active" && "opacity-70",
     className,
@@ -66,13 +71,11 @@ export function TextLink({
 
   const content = (
     <>
-      {leadingIcon && (
-        <span aria-hidden className="inline-flex items-center">
-          {leadingIcon}
-        </span>
-      )}
-      <span className={innerClasses}>{children}</span>
-      {trailingIcon}
+      {leadingIcon && (roll ? <RollingIcon>{leadingIcon}</RollingIcon> : (
+        <span aria-hidden className="inline-flex items-center">{leadingIcon}</span>
+      ))}
+      <span className={innerClasses}>{roll && typeof children === "string" ? <RollingText>{children}</RollingText> : children}</span>
+      {trailingIcon && (roll ? <RollingIcon>{trailingIcon}</RollingIcon> : trailingIcon)}
     </>
   );
 

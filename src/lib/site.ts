@@ -112,6 +112,12 @@ export type Project = {
   /** Rendered as a dedicated row with avatar circles linking to LinkedIn. */
   cofounders?: readonly ProjectCofounder[];
   media?: ProjectMedia;
+  /** Independent Home visuals; an empty set keeps case-study media off Home. */
+  homeMedia?: Pick<ProjectMedia, "m01" | "m02" | "m03">;
+  /** Screen content scoped to Home, separate from the internal case-study gallery. */
+  homeMockup?: Project["desktopMockup"];
+  /** Optional second desktop scene. Set screen to an image or video Mask. */
+  desktopMockup?: { background?: "studio" | "kontigo"; screen?: Mask; leftSilhouetteScreen?: Mask; leftSilhouetteSoftLightScreen?: Mask; frontScreen?: Mask; rightTiltedScreen?: Mask; rightScreen?: Mask; phoneScreen?: Mask; phoneTopScreen?: Mask; phoneTopLowScreen?: Mask; phoneLeftScreen?: Mask; phoneRightScreen?: Mask };
 };
 
 export const PROJECTS: readonly Project[] = [
@@ -154,6 +160,7 @@ export const PROJECTS: readonly Project[] = [
         linkedin: "https://www.linkedin.com/in/juliannunezb/",
       },
     ],
+    homeMedia: {},
     media: {
       m01: {
         src: "/work/yuno/hero.webp",
@@ -174,6 +181,10 @@ export const PROJECTS: readonly Project[] = [
   },
   {
     slug: "rappi",
+    // Add your own content here, e.g.:
+    // screen: { src: "/work/rappi/screen.png", alt: "Rappi dashboard" }
+    // screen: { kind: "video", src: "/work/rappi/demo.mp4", poster: "/work/rappi/poster.jpg" }
+    desktopMockup: {},
     name: "Rappi",
     tagline: "The first superapp of Latin America.",
     year: "2014 — 2021",
@@ -215,6 +226,7 @@ export const PROJECTS: readonly Project[] = [
         linkedin: "https://www.linkedin.com/in/felipe-villamarin-85518161/",
       },
     ],
+    homeMedia: {},
     media: {
       m01: {
         src: "/work/rappi/hero.webp",
@@ -271,6 +283,22 @@ export const PROJECTS: readonly Project[] = [
         linkedin: "https://www.linkedin.com/in/gino-guatavita-7269139b/",
       },
     ],
+    homeMedia: {},
+    homeMockup: {
+      background: "kontigo",
+      leftSilhouetteSoftLightScreen: {
+        src: "/work/kontigo/screens/corporate-home-dark-operations-spacing-6k.webp",
+        alt: "Kontigo Corporate — home del dashboard en modo oscuro",
+      },
+      phoneTopScreen: {
+        src: "/work/kontigo/screens/home-wallet-dark-ds.webp",
+        alt: "Kontigo — home de la wallet en modo oscuro",
+      },
+      phoneRightScreen: {
+        src: "/work/kontigo/screens/walkthrough-dark.webp",
+        alt: "Kontigo — walkthrough de bienvenida en modo oscuro",
+      },
+    },
     media: {
       m01: {
         src: "/work/kontigo/hero.webp",

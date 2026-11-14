@@ -90,13 +90,22 @@ export function NavBar() {
 
   const navLinks = (
     <>
-      <TextLink variant="nav" href="/#top">
+      <TextLink roll variant="nav" href="/#top" onClick={(e) => {
+        if (pathname === "/" || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        navigate("/#top");
+      }}>
         Intro
       </TextLink>
-      <TextLink variant="nav" href="/shots">
+      <TextLink roll variant="nav" href="/shots" onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        navigate("/shots");
+      }}>
         Shots
       </TextLink>
       <TextLink
+        roll
         variant="nav"
         href={SITE.resumeUrl}
         external

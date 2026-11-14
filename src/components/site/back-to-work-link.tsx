@@ -16,7 +16,8 @@ export function BackToWorkLink() {
   const { navigate } = usePageCurtain();
   return (
     <TextLink
-      variant="nav"
+      roll
+          variant="nav"
       href={WORK_HREF_FALLBACK}
       onClick={(e) => {
         e.preventDefault();

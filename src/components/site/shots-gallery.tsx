@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -11,6 +12,7 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { EASE, DURATION } from "@/lib/motion";
+import { LuxuryMedia } from "./luxury-motion";
 import { SHOTS, type Shot } from "@/lib/shots";
 
 export function ShotsGallery() {
@@ -31,13 +33,14 @@ export function ShotsGallery() {
               ease: EASE.out,
               delay: 0.2 + i * 0.1,
             }}
+            data-shot-id={shot.id}
             className="group overflow-hidden rounded-xl border border-border/70 bg-card text-left transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
+            <LuxuryMedia>
             <AspectRatio ratio={shot.ratio}>
-              <div
-                className={`h-full w-full bg-gradient-to-br ${shot.tone} transition-transform duration-700 ease-out group-hover:scale-105`}
-              />
+              <Image src={shot.src} alt={`${shot.project} — visual reference ${shot.title}`} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
             </AspectRatio>
+            </LuxuryMedia>
             <div className="flex items-center justify-between gap-2 px-4 py-3">
               <span className="text-sm font-medium text-foreground">
                 {shot.title}
@@ -49,20 +52,18 @@ export function ShotsGallery() {
       </div>
 
       <Dialog open={open !== null} onOpenChange={(v) => !v && setOpen(null)}>
-        <DialogContent className="p-0">
+        <DialogContent className="overflow-y-auto p-0">
           {open && (
             <>
-              <AspectRatio ratio={16 / 10}>
-                <div
-                  className={`h-full w-full bg-gradient-to-br ${open.tone}`}
-                />
-              </AspectRatio>
+              <div className="relative shrink-0" style={{ aspectRatio: open.ratio }}>
+                <Image src={open.src} alt={`${open.project} — visual reference ${open.title}`} fill sizes="(min-width: 768px) 768px, 100vw" className="object-contain" />
+              </div>
               <div className="flex items-center justify-between gap-3 border-t border-border/70 px-6 py-4">
                 <div className="flex flex-col gap-0.5">
                   <DialogTitle>{open.title}</DialogTitle>
-                  <DialogDescription>{open.project}</DialogDescription>
+                  <DialogDescription>Previously used as a reference for {open.project}.</DialogDescription>
                 </div>
-                <Badge variant="muted">Placeholder</Badge>
+                <Badge variant="muted">Reference</Badge>
               </div>
             </>
           )}

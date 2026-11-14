@@ -1,0 +1,6 @@
+.frame {position:absolute;inset:0;overflow:hidden;pointer-events:none;container-type:size;}
+.mark {position:absolute;left:50%;top:50%;width:max(128cqw,116cqh);height:auto;max-width:none;aspect-ratio:130/144;translate:-50% -50%;overflow:visible;}
+
+/* Final screen-space stroke: the projected and frontal paths share one subtle ink. */
+.ink {color:rgba(255,255,255,.16);}
+.ink path {stroke-width:.75px;vector-effect:non-scaling-stroke;}

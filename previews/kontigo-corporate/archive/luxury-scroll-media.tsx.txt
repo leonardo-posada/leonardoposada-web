@@ -1,0 +1,64 @@
+"use client";
+
+import { useEffect, useRef, type ReactNode } from "react";
+import { useReducedMotion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { usePageCurtain } from "./page-curtain-provider";
+
+// Museum of Motion / Luxury: lib/motion/stages/vibes.ts, image curtain.
+// https://github.com/johnpolacek/museum-of-motion/blob/main/lib/motion/stages/vibes.ts
+export function LuxuryScrollMedia({ children }: { children: ReactNode }) {
+  const frame = useRef<HTMLDivElement>(null);
+  const image = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const { ready } = usePageCurtain();
+
+  useEffect(() => {
+    const box = frame.current;
+    const picture = image.current;
+    if (!box || !picture || !ready || reduced !== false) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const context = gsap.context(() => {
+      gsap.fromTo(box,
+        { clipPath: "inset(0% 48% 0% 48%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: box, start: "top 90%", end: "center 55%", scrub: 1.2,
+          },
+        },
+      );
+      gsap.fromTo(picture,
+        { scale: 1.25 },
+        {
+          scale: 1, ease: "none",
+          scrollTrigger: {
+            trigger: box, start: "top 90%", end: "bottom top", scrub: 1.2,
+          },
+        },
+      );
+    }, box);
+    // Layout can settle after fonts, images or the responsive grid resize.
+    let refreshFrame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(refreshFrame);
+      refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    observer.observe(box);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(refreshFrame);
+      context.revert();
+    };
+  }, [ready, reduced]);
+
+  return (
+    <div data-luxury-media data-luxury-version="reference-scroll">
+      <div ref={frame} className="overflow-hidden rounded-lg">
+        <div ref={image}>{children}</div>
+      </div>
+    </div>
+  );
+}

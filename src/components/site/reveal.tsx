@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
-import { REVEAL, TRANS_OUT } from "@/lib/motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { usePageCurtain } from "./page-curtain-provider";
+import { TRANS_OUT } from "@/lib/motion";
 
 /**
  * Scroll-triggered fade-up. Uses the same REVEAL + TRANS_OUT motion tokens as
@@ -21,13 +22,17 @@ export function Reveal({
   amount?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const visible = useInView(ref, { once: true, amount });
+  const reduced = useReducedMotion();
+  const { ready } = usePageCurtain();
+  const show = (ready && visible) || reduced;
   return (
     <motion.div
-      variants={REVEAL}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount }}
-      transition={{ ...TRANS_OUT, delay }}
+      ref={ref}
+      initial={false}
+      animate={{ opacity: show ? 1 : 0, y: show ? 0 : 24, clipPath: show ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 15% 0%)" }}
+      transition={{ ...TRANS_OUT, delay: reduced ? 0 : delay, duration: reduced ? 0 : 1.2 }}
       className={className}
     >
       {children}

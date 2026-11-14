@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { RollingText } from "@/components/ui/rolling-text";
+import { RollingIcon } from "@/components/ui/rolling-icon";
+import { CurtainLink } from "@/components/site/curtain-link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import {
   PROJECTS,
@@ -13,7 +15,10 @@ import { VideoSlot } from "@/components/site/video-slot";
 import { SITE_URL } from "@/lib/env";
 import { Section } from "@/components/site/section";
 import { BackToWorkPill } from "@/components/site/back-to-work-pill";
+import { DeviceMockupGallery } from "@/components/site/device-mockup-gallery";
+import { KontigoWebsiteGallery } from "@/components/site/kontigo-website-gallery";
 import { DetailHero } from "@/components/site/detail-hero";
+import { LuxuryMedia } from "@/components/site/luxury-motion";
 import { Reveal } from "@/components/site/reveal";
 import { AvatarCircles } from "@/components/ui/avatar-circles";
 import { cn } from "@/lib/utils";
@@ -131,6 +136,7 @@ function CaptionedImage({
 }) {
   return (
     <figure className="flex flex-col gap-4">
+      <LuxuryMedia>
       <div className="overflow-hidden rounded-xl bg-muted">
         <Image
           src={src}
@@ -142,6 +148,7 @@ function CaptionedImage({
           priority={priority}
         />
       </div>
+      </LuxuryMedia>
       {caption && (
         <figcaption className="max-w-xl text-sm font-light text-muted-foreground leading-[1.5]">
           {caption}
@@ -191,7 +198,16 @@ export default async function WorkDetailPage({
       {/* ─── HERO · cascading entry (back link → name → tagline → meta
        *    row → hero image). Lives in a client component so framer-motion
        *    can drive the stagger. ─────────────────────────────────────── */}
-      <DetailHero project={project} />
+      <DetailHero key={project.slug} project={project} />
+      {project.desktopMockup && (
+        <Section className="pb-16 md:pb-24">
+          <div className="col-span-2 md:col-span-4">
+            <DeviceMockupGallery name={project.name} config={project.desktopMockup} />
+          </div>
+        </Section>
+      )}
+
+      {project.slug === "kontigo" && <KontigoWebsiteGallery />}
 
       {/* ─── 01 · Context ──────────────────────────────────────────────── */}
       <Reveal>
@@ -409,18 +425,17 @@ export default async function WorkDetailPage({
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
               Next project
             </p>
-            <Link
+            <CurtainLink
               href={`/work/${next.slug}`}
-              className="group mt-6 flex items-baseline gap-4 md:gap-6"
+              className="group roll-hover mt-6 flex items-baseline gap-4 md:gap-6"
             >
               <h2 className="font-light text-foreground text-6xl md:text-9xl leading-[0.93] tracking-[-0.036em] transition-opacity group-hover:opacity-70">
-                {next.name}
+                <RollingText>{next.name}</RollingText>
               </h2>
-              <ArrowUpRight
-                weight="light"
-                className="size-6 shrink-0 text-foreground transition-transform duration-500 ease-out-expo group-hover:translate-x-1 group-hover:-translate-y-1 md:size-10"
-              />
-            </Link>
+              <RollingIcon className="next-project-arrow">
+                <ArrowUpRight weight="light" className="size-6 text-foreground md:size-10" />
+              </RollingIcon>
+            </CurtainLink>
             <p className="mt-6 max-w-xl font-light text-muted-foreground text-base leading-[1.5]">
               {next.tagline}
             </p>

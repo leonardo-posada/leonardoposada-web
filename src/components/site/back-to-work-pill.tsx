@@ -73,6 +73,7 @@ export function BackToWorkPill() {
         )}
       >
         <TextLink
+          roll
           variant="nav"
           href={WORK_HREF_FALLBACK}
           onClick={(e) => {

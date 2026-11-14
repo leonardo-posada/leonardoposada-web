@@ -5,6 +5,8 @@ import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { REVEAL, TRANS_OUT } from "@/lib/motion";
 import { isImageMask, type Project } from "@/lib/site";
+import { LuxuryLine, LuxuryMedia } from "./luxury-motion";
+import { DesktopMockup } from "./desktop-mockup";
 import { Section } from "./section";
 import { BackToWorkLink } from "./back-to-work-link";
 import { usePageCurtain } from "./page-curtain-provider";
@@ -21,6 +23,7 @@ import { usePageCurtain } from "./page-curtain-provider";
  */
 export function DetailHero({ project }: { project: Project }) {
   const { ready } = usePageCurtain();
+  const kontigoDesktop = project.slug === "kontigo" ? project.homeMockup : undefined;
   const controls = useAnimation();
 
   useEffect(() => {
@@ -51,7 +54,7 @@ export function DetailHero({ project }: { project: Project }) {
           className="col-span-2 mt-16 md:col-span-4 md:mt-24"
         >
           <h1 className="font-light text-foreground text-7xl md:text-[12rem] leading-[0.9] tracking-[-0.045em]">
-            {project.name}
+            <LuxuryLine delay={0.16}>{project.name}</LuxuryLine>
           </h1>
         </motion.div>
 
@@ -107,7 +110,10 @@ export function DetailHero({ project }: { project: Project }) {
             className="col-span-2 md:col-span-4"
           >
             <figure className="flex flex-col gap-4">
-              <div className="overflow-hidden rounded-xl bg-muted">
+              <LuxuryMedia>
+              {kontigoDesktop ? <div className="[&_figcaption]:hidden">
+                <DesktopMockup name={project.name} variant="front" background="kontigo" outlineBackground fitFront screen={kontigoDesktop.leftSilhouetteSoftLightScreen} />
+              </div> : <div className="overflow-hidden rounded-xl bg-muted">
                 <Image
                   src={project.media.m01.src}
                   alt={project.media.m01.alt ?? `${project.name} — m01`}
@@ -117,8 +123,9 @@ export function DetailHero({ project }: { project: Project }) {
                   className="h-auto w-full"
                   priority
                 />
-              </div>
-              {project.media.m01.caption && (
+              </div>}
+              </LuxuryMedia>
+              {!kontigoDesktop && project.media.m01.caption && (
                 <figcaption className="max-w-xl text-sm font-light text-muted-foreground leading-[1.5]">
                   {project.media.m01.caption}
                 </figcaption>
@@ -127,6 +134,18 @@ export function DetailHero({ project }: { project: Project }) {
           </motion.div>
         </Section>
       )}
+      {kontigoDesktop && <Section className="pb-24 md:pb-32 -mt-16 md:-mt-24 [&_figcaption]:hidden">
+        <div className="col-span-2 md:col-span-2">
+          <LuxuryMedia>
+            <DesktopMockup name="Kontigo AI" variant="right-tilted" background="kontigo" outlineBackground screen={{src:"/work/kontigo/screens/corporate-ai-home-dark-6k.webp",alt:"Kontigo AI — home en modo oscuro"}} />
+          </LuxuryMedia>
+        </div>
+        <div className="col-span-2 md:col-span-2">
+          <LuxuryMedia>
+            <DesktopMockup name="Kontigo · Cuentas" variant="left-silhouette-soft-light" background="kontigo" outlineBackground closeUp screen={{src:"/work/kontigo/screens/corporate-accounts-dark-6k.webp",alt:"Kontigo Corporate — Cuentas en modo oscuro"}} />
+          </LuxuryMedia>
+        </div>
+      </Section>}
     </>
   );
 }
