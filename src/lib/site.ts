@@ -287,8 +287,8 @@ export const PROJECTS: readonly Project[] = [
     homeMockup: {
       background: "kontigo",
       leftSilhouetteSoftLightScreen: {
-        src: "/work/kontigo/screens/corporate-home-dark-operations-spacing-6k.webp",
-        alt: "Kontigo Corporate — home del dashboard en modo oscuro",
+        src: "/work/kontigo/screens/business-home-dark-operations-spacing-6k.webp",
+        alt: "Kontigo Business — home del dashboard en modo oscuro",
       },
       phoneTopScreen: {
         src: "/work/kontigo/screens/home-wallet-dark-ds.webp",

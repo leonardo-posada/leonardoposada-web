@@ -1,15 +1,15 @@
 /* Give the balance figure a stronger visual hierarchy. */
-.corporate .balance-amount {
+.business .balance-amount {
   font-size: clamp(56px, 5.5vw, 88px);
   line-height: 1.12;
   letter-spacing: -.045em;
 }
-.corporate .balance-amount > span:not(.motion-value) {
+.business .balance-amount > span:not(.motion-value) {
   font-size: 22px;
   letter-spacing: 0;
 }
 
-.corporate .balance-amount .motion-value { font-size: inherit; letter-spacing: inherit; }
+.business .balance-amount .motion-value { font-size: inherit; letter-spacing: inherit; }
 
 
 .overview-grid .stats strong.positive { color: var(--color-text-fg); }
@@ -42,7 +42,7 @@
 
 .ai-launcher { display:none!important; }
 
-.corporate .header-profile .profile-name { font-size:12px; font-weight:400; }
+.business .header-profile .profile-name { font-size:12px; font-weight:400; }
 
 /* Keep the card details airy and its action beside the relevant information. */
 .portfolio-operations-card .team-card-stage { margin-bottom:28px; }

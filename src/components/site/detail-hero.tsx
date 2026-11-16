@@ -137,12 +137,12 @@ export function DetailHero({ project }: { project: Project }) {
       {kontigoDesktop && <Section className="pb-24 md:pb-32 -mt-16 md:-mt-24 [&_figcaption]:hidden">
         <div className="col-span-2 md:col-span-2">
           <LuxuryMedia>
-            <DesktopMockup name="Kontigo AI" variant="right-tilted" background="kontigo" outlineBackground screen={{src:"/work/kontigo/screens/corporate-ai-home-dark-6k.webp",alt:"Kontigo AI — home en modo oscuro"}} />
+            <DesktopMockup name="Kontigo AI" variant="right-tilted" background="kontigo" outlineBackground screen={{src:"/work/kontigo/screens/business-ai-home-dark-6k.webp",alt:"Kontigo AI — home en modo oscuro"}} />
           </LuxuryMedia>
         </div>
         <div className="col-span-2 md:col-span-2">
           <LuxuryMedia>
-            <DesktopMockup name="Kontigo · Cuentas" variant="left-silhouette-soft-light" background="kontigo" outlineBackground closeUp screen={{src:"/work/kontigo/screens/corporate-accounts-dark-6k.webp",alt:"Kontigo Corporate — Cuentas en modo oscuro"}} />
+            <DesktopMockup name="Kontigo · Cuentas" variant="left-silhouette-soft-light" background="kontigo" outlineBackground closeUp screen={{src:"/work/kontigo/screens/business-accounts-dark-6k.webp",alt:"Kontigo Business — Cuentas en modo oscuro"}} />
           </LuxuryMedia>
         </div>
       </Section>}

@@ -6,17 +6,17 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 4, colorScheme: 'dark', locale: 'es-VE' });
-  await page.goto(process.env.KONTIGO_CORPORATE_URL || 'http://localhost:3202', { waitUntil: 'domcontentloaded' });
+  await page.goto(process.env.KONTIGO_BUSINESS_URL || 'http://localhost:3202', { waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Continuar con Google', exact: true }).click();
   await page.getByRole('heading', { name: 'Hola, Jesús', exact: true }).waitFor();
   await page.locator('[data-testid="workspace-curtain"]').waitFor({ state: 'detached' });
-  await page.waitForFunction(() => document.querySelector('.corporate')?.getAttribute('data-theme') === 'dark');
-  await page.locator('#corporate-navigation').getByRole('button', { name: 'Tarjetas', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('.business')?.getAttribute('data-theme') === 'dark');
+  await page.locator('#business-navigation').getByRole('button', { name: 'Tarjetas', exact: true }).click();
   const operationsPanel = page.locator('[data-slot="panel"]').filter({ has: page.getByRole('heading', { name: 'Operaciones', exact: true }) });
   await operationsPanel.waitFor();
   await page.waitForTimeout(1800);
   const operationsHTML = await operationsPanel.evaluate(el => el.outerHTML);
-  await page.locator('#corporate-navigation').getByRole('button', { name: 'Inicio', exact: true }).click();
+  await page.locator('#business-navigation').getByRole('button', { name: 'Inicio', exact: true }).click();
   await page.getByRole('heading', { name: 'Hola, Jesús', exact: true }).waitFor();
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(2000);
@@ -24,10 +24,10 @@ try {
   if (await expandMenu.isVisible()) await expandMenu.click();
   await page.getByRole('button', { name: 'Líneas', exact: true }).click();
   await page.locator('[data-chart-view="lines"]').waitFor();
-  // Portfolio-only presentation changes; Corporate source remains untouched.
+  // Portfolio-only presentation changes; Business source remains untouched.
   await page.addStyleTag({ content: 'nextjs-portal, [data-home-landscape], .page-heading { display:none!important; } .overview-grid .interactive-chart .weekly-lines, .overview-grid .interactive-chart .weekly-chart {height:180px!important;min-height:180px!important;max-height:180px!important;flex:none!important;}' });
-  await page.addStyleTag({ content: await readFile(new URL('./kontigo-corporate-preview.css', import.meta.url), 'utf8') });
-  const avatar = await readFile(new URL('../public/work/kontigo/screens/corporate-avatar.jpg', import.meta.url));
+  await page.addStyleTag({ content: await readFile(new URL('./kontigo-business-preview.css', import.meta.url), 'utf8') });
+  const avatar = await readFile(new URL('../public/work/kontigo/screens/business-avatar.jpg', import.meta.url));
   await page.evaluate(async src => {
     const slot = document.querySelector('.header-profile [data-slot="avatar"]');
     if (!slot) throw new Error('Header avatar not found');
@@ -47,8 +47,14 @@ try {
     heading.textContent = 'Hola, David';
   });
   await page.waitForTimeout(2500);
-  // Fictional October movements for the portfolio.
+  // Fictional closed October: weekly cash movements, not cumulative growth.
+  // Collections vary; supplier/payroll batches outweigh receipts in week 2.
+  // The final bucket contains only October 29–31, so it is intentionally smaller.
   await page.evaluate(() => {
+    const weekly = [
+      [24800,18400,29600,25900,10300],
+      [10200,21800,8600,18900,5300],
+    ];
     const month = document.querySelector('.monthly-chart-actions [data-slot="badge"]');
     if (!month) throw new Error('Chart month badge not found');
     month.textContent = 'octubre';
@@ -112,7 +118,7 @@ try {
     console.log('Portfolio HTML preview ready; screenshot not regenerated.');
   } else {
   const buffer = await page.screenshot();
-  await sharp(buffer).webp({ quality: 95 }).toFile(new URL('../public/work/kontigo/screens/corporate-home-dark-operations-spacing-6k.webp', import.meta.url).pathname);
-  await sharp(buffer).resize(1200).toFile('/tmp/kontigo-corporate-preview.png');
+  await sharp(buffer).webp({ quality: 95 }).toFile(new URL('../public/work/kontigo/screens/business-home-dark-operations-spacing-6k.webp', import.meta.url).pathname);
+  await sharp(buffer).resize(1200).toFile('/tmp/kontigo-business-preview.png');
   }
 } finally { await browser.close(); }
